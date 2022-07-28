@@ -1,0 +1,332 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition>
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <h2>Información personal</h2>
+                    </div>
+                </div>
+                <hr/>
+
+
+                <div class="row g-3">
+                    <div class="col-auto pt-1">
+                        <h:form>
+                            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarClave" value="Cambiar clave" >
+                                Cambiar clave
+                            </a>
+                        </h:form>
+                    </div>
+                    <div class="col-auto pt-1">
+                        <h:form>
+                            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarDatos" value="Cambiar mis datos" >
+                                Modificar mis datos
+                            </a>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h:form id="frmDatos">
+                    <p:panel id="grid">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label" value="Nombre"><b>Nombre</b></label>
+                                <p>#{usuarioSesion.usuLog.nombre}</p>
+                            </div>
+                            <div class="col">
+                                <label class="form-label"><b>Apellidos</b></label>
+                                <p>#{usuarioSesion.usuLog.apellido}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">        
+                            <div class="col">
+                                <label class="form-label"><b>Correo personal</b></label>
+                                <p>#{usuarioSesion.usuLog.correoPersonal}</p>
+                            </div>                    
+                            <div class="col">
+                                <label class="form-label"><b>Correo cinte</b></label>
+                                <p>#{usuarioSesion.usuLog.correoCinte}</p>
+                            </div> 
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label"><b>Pais</b></label>
+                                <p>#{usuarioSesion.usuLog.FKCiudad.FKPais.descripcion}</p>
+                            </div>                    
+                            <div class="col">
+                                <label class="form-label"><b>Ciudad</b></label>
+                                <p>#{usuarioSesion.usuLog.FKCiudad.descripcion}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label"><b>Teléfono</b></label>
+                                <p>#{usuarioSesion.usuLog.telefonoFijo}</p>
+                            </div>
+                            <div class="col">
+                                <label class="form-label"><b>Celular</b></label>
+                                <p>#{usuarioSesion.usuLog.celular}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label"><b>Tipo de documento</b></label>
+                                <p>#{usuarioSesion.usuLog.FKTipoDocumento.descripcion}</p>
+                            </div>
+                            <div class="col">
+                                <label class="form-label"><b>Número de documento</b></label>
+                                <p>#{usuarioSesion.usuLog.documento}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label"><b>Roles</b></label><br/>
+                                <ui:repeat value="#{usuarioSesion.usuLog.rolList}" var="rol">
+                                    <h:outputText value="#{rol.toString()} "/>
+                                </ui:repeat>
+                            </div>
+                        </div>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="editarClave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 50rem;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cambiar contraseña</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h:form>
+                            <p:panel id="grid">
+                                <h3>Escribe la nueva contraseña</h3>
+                                <p:password id="claveNueva" value="#{usuarioSesion.claveNueva}" required="true" html5:placeholder="Nueva clave" class="form-control" label="Clave nueva"
+                                            validatorMessage="Este campo tiene una logitud de min(5) a max(20) carácteres">
+                                    <f:validateLength minimum="5" maximum="20"/>
+                                </p:password>
+                                <p:message for="claveNueva" />
+                                <br/>
+                                <p:password id="claveConfirmada" value="#{usuarioSesion.claveConfirmacion}" required="true" html5:placeholder="Confirma tu clave" class="form-control" label="Clave confirmada"
+                                            validatorMessage="Este campo tiene una logitud de min(5) a max(20) carácteres">
+                                    <f:validateLength minimum="5" maximum="20"/>
+                                </p:password>
+                                <p:message for="claveConfirmada" />
+                            </p:panel>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col text-center">
+                                        <p:commandButton update="grid" validateClient="true" action="#{usuarioSesion.cambiarClave()}" class="btn btn-primary btn-lg m-3" value="Cambiar contraseña">
+                                        </p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="editarDatos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 50rem;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Registra aqui tu analista Cinte!</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="card border-0 shadow">
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div >
+
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="../assets/img/logo.png" alt="" width="190" height="60"></img>
+                            <h:form id="frmRegistroAnalista">
+                                <p:panel id="grid">
+                                    <div class="modal-body">
+                                        <p style="color: red;">los campos con (*) son obligatorios</p>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="nombre" class="form-label"><b>Nombre</b> <b class="text-danger">*</b></label>                                               
+                                                <p:inputText  id="nombre" class="form-control" value="#{usuarioSesion.usuLog.nombre}"  html5:placeholder="Escribe el nombre" html5:required="true" label="Nombre"
+                                                              validatorMessage="Este campo solo acepta letras y espacios como valores validos y su longitud es de min(3) a max(30) caracteres">
+                                                    <f:validateLength minimum="3" maximum="30"/>
+                                                    <f:validateRegex pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,48}"/>
+                                                </p:inputText>
+                                                <div class="row mt-2">
+                                                    <div class="col ">
+                                                        <p:message for="nombre" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <label for="apellido" class="form-label"><b>Apellidos</b><b class="text-danger">*</b></label>
+                                                <p:inputText  id="apellido" class="form-control" value="#{usuarioSesion.usuLog.apellido}" html5:placeholder="Escribe el apellido" html5:required="true" label="Apellido"
+                                                              validatorMessage="Este campo solo acepta letras y espacios como valores validos y su longitud es de min(3) a max(30) caracteres">
+                                                    <f:validateLength minimum="3" maximum="30"/>
+                                                    <f:validateRegex pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,48}" />
+                                                </p:inputText>
+
+                                                <div class="row mt-2">
+                                                    <div class="col ">
+                                                        <p:message for="apellido"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="emails" class="form-label"><b>Correo Cinte</b> <b class="text-danger">*</b></label>
+                                            <p:inputText html5:type="email" class="form-control" id="emails"  html5:placeholder="Escribe@grupocinte.com" value="#{usuarioSesion.usuLog.correoCinte}" html5:required="true"
+                                                         validatorMessage="Escribe la estructura de un correo Cinte, longitud es min(18) a max(40) caracteres" label="Correo">
+                                                <f:validateLength minimum="18" maximum="40"/>
+                                                <f:validateRegex pattern="(\W|^)[\w.\-]{0,25}@(grupocinte)\.com(\W|$)" />
+                                            </p:inputText>
+
+                                            <div class="invalid-feedback">
+                                                Ingresa una direccion de correo que sea valida
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col ">
+                                                    <p:message for="emails" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="emailPersonal" class="form-label"><b>Correo personal</b> <b class="text-danger">*</b></label>
+                                            <p:inputText html5:type="email" class="form-control" id="emailPersonal"  html5:placeholder="Escribe@correo.com" value="#{usuarioSesion.usuLog.correoPersonal}" html5:required="true"
+                                                         validatorMessage="Escribe la estructura de un correo (yahoo,hotmail,gmail), longitud min(12) a max(40) caracteres" label="Correo">
+                                                <f:validateLength minimum="12" maximum="40"/>
+                                                <f:validateRegex pattern="(\W|^)[\w.\-]{0,25}@(yahoo|hotmail|gmail)\.com(\W|$)" />
+                                            </p:inputText>
+
+                                            <div class="invalid-feedback">
+                                                Ingresa una direccion de correo que sea valida
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col ">
+                                                    <p:message for="emailPersonal" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="telefono" class="form-label"><b>Teléfono fijo</b> <b class="text-danger">*</b></label>
+                                                    <p:inputText  id="telefono" class="form-control" value="#{usuarioSesion.usuLog.telefonoFijo}" html5:placeholder="Escribe el teléfono" html5:required="true" label="Teléfono"
+                                                                  validatorMessage="Este campo solo acepta numeros como valores validos y su longitud es de (7) digitos ">
+                                                        <f:validateLength minimum="7" maximum="20"/>
+                                                        <f:validateRegex pattern="[0-9]*" />
+                                                    </p:inputText>
+                                                    <div class="row mt-2">
+                                                        <div class="col ">
+                                                            <p:message for="telefono"/>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <label for="celular" class="form-label"><b>Celular</b> <b class="text-danger">*</b></label>
+                                                    <p:inputText  id="celular" class="form-control" value="#{usuarioSesion.usuLog.celular}" html5:placeholder="Escribe numero celular" html5:required="true" label="Celular"
+                                                                  validatorMessage="Este campo solo acepta numeros como valores validos y su longitud es de (10) digitos ">
+                                                        <f:validateLength minimum="10" maximum="10"/>
+                                                        <f:validateRegex pattern="[0-9]*" />
+                                                    </p:inputText>
+                                                    <div class="row mt-2">
+                                                        <div class="col ">
+                                                            <p:message for="celular"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>                      
+                                        <div class="row">                                                     
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="11" class="form-label"><b>Selecciona el pais</b> <b class="text-danger">*</b></label>
+                                                    <h:selectOneMenu id="l1" class="form-control"  value="#{usuarioSesion.pais.idPais}">
+                                                        <f:selectItems value="#{usuarioSesion.paises}" var="pais" itemValue="#{pais.idPais}" itemLabel="#{pais.descripcion}"/>
+                                                        <p:ajax update="l2group" listener="#{usuarioSesion.renderCiudades()}"/>  
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>        
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="12" class="form-label"><b>Selecciona la ciudad</b> <b class="text-danger">*</b></label>
+                                                    <h:panelGroup id="l2group">
+                                                        <h:selectOneMenu class="form-control" id="l2" value="#{usuarioSesion.ciudad.idCiudad}" >  
+                                                            <f:selectItems itemLabel="#{ciu.descripcion}" itemValue="#{ciu.idCiudad}" var="ciu" value="#{usuarioSesion.ciudades}"></f:selectItems>
+                                                        </h:selectOneMenu>  
+                                                    </h:panelGroup>
+                                                </div>        
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="tipodocumento" class="form-label"><b>Tipo de documento (opcional)</b></label>
+                                                <h:selectOneMenu  id="tipodocumento"  class="form-control" value="#{usuarioSesion.tipoDocumento.idTipoDocumento}">
+                                                    <f:selectItems itemLabel="#{tipd.descripcion}" itemValue="#{tipd.idTipoDocumento}" var="tipd" value="#{usuarioSesion.tiposDocumentos}"></f:selectItems>  
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <label for="documento" class="form-label"><b>Numero de Documento</b></label>
+                                                    <p:inputText  id="documento" class="form-control" value="#{usuarioSesion.usuLog.documento}" html5:placeholder="Escribe aqui numero de documento" label="documento"
+                                                                  validatorMessage="La longitud de este cambio es de (7 a 10) digitos ">                                                       
+                                                        <f:validateRegex pattern="[0-9]*" />
+                                                    </p:inputText>
+                                                    <div class="row mt-2">
+                                                        <div class="col ">
+                                                            <p:message for="documento"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </p:panel>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <p:commandButton value="Modificar mis datos" id="btnAjax" update="grid"  validateClient="true" styleClass="p-mr-2" action="#{usuarioSesion.actualizarUsuario()}">
+                                        <f:ajax render=":frmDatos"/>
+                                    </p:commandButton>
+                                </div>                               
+                            </h:form>                 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:composition>
+</html>
+

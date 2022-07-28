@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition>
+
+        <div class="card">
+            <div class="card-header">
+                <h:form class="row g-3">
+                    <div class="col-auto pt-3">
+                        <h4><span class="badge rounded-pill bg-primary text-white">Asignados (En proceso)</span></h4>
+                    </div>
+                </h:form>
+            </div>
+            <div class="card-body">
+                <h:form id="frmPrincipal">
+                    <p:dataTable id="tabla" emptyMessage="Ningún referido registrado" value="#{referidoSesion.referidosAsignados}" 
+                                 var="item" paginator="true"  rows="10" rowSelectMode="add" paginatorPosition="bottom" reflow="true"
+                                 tableStyle="width:auto" >
+
+                        <p:column headerText="Nombre" filterBy="#{item.nombre}" filterMatchMode="contains">
+                            <h:outputText value="#{item.nombre}"  /> 
+                        </p:column>
+
+                        <p:column headerText="Apellido" filterBy="#{item.apellido}" filterMatchMode="contains">
+                            <h:outputText value="#{item.apellido}"  /> 
+                        </p:column>
+
+                        <p:column headerText="Correo" filterBy="#{item.correo}" filterMatchMode="contains">
+                            <h:outputText value="#{item.correo}"  /> 
+                        </p:column>
+
+                        <p:column headerText="Área" filterBy="#{item.FKArea.descripcion}" filterMatchMode="contains">
+                            <h:outputText value="#{item.FKArea.descripcion}"  /> 
+                        </p:column>
+
+                        <p:column headerText="Perfil" filterBy="#{item.FKReferido.descipcion}" filterMatchMode="contains">
+                            <h:outputText value="#{item.FKReferido.descipcion}"  /> 
+                        </p:column>
+
+                        <p:column headerText="" exportable="false" >
+                            <h:commandButton class="btn btn-primary rounded-pill"
+                                             html5:data-bs-toggle="modal"
+                                             html5:data-bs-target="#estado" 
+                                             action="#{referidoSesion.guardarTemporal(item)}" 
+                                             value="Estado" >
+                                <f:ajax render=":frmCompletar"> </f:ajax>
+                            </h:commandButton>
+                        </p:column>
+
+                        <p:column headerText="" exportable="false" >
+                            <h:commandButton class="btn btn-primary rounded-pill"
+                                             html5:data-bs-toggle="modal"
+                                             html5:data-bs-target="#informacion" 
+                                             action="#{referidoSesion.guardarTemporal(item)}" 
+                                             value="Ver" >
+                                <f:ajax render=":frmEstado"> </f:ajax>
+                            </h:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </div>
+        </div>
+
+        <!--Modal-->
+        <div class="modal fade" id="informacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog text-dark">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Datos del referido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                        </button>
+                    </div>
+                    <h:form id="frmEstado">
+                        <div class="modal-body">
+                            <p><b>Consultor: </b>#{referidoSesion.refTemporal.FKConsultor.nombre} #{referidoSesion.refTemporal.FKConsultor.apellido}</p>
+                            <hr/>
+                            <p><b>Referido: </b>#{referidoSesion.refTemporal.nombre} #{referidoSesion.refTemporal.apellido}</p>
+                            <p><b>Área: </b>#{referidoSesion.refTemporal.FKArea.descripcion}</p>
+                            <p><b>Perfil del referido: </b>#{referidoSesion.refTemporal.FKReferido.descipcion}</p>
+                            <p><b>Herramientas o tecnologías que conoce el referido: </b>#{referidoSesion.refTemporal.descripcion}</p>
+                            <p><b>Correo: </b>#{referidoSesion.refTemporal.correo}</p>
+                            <p><b>Celular: </b>#{referidoSesion.refTemporal.celular}</p>
+                            <p><b>Teléfono: </b>#{referidoSesion.refTemporal.telefonoFijo} </p>
+                            <p><b>Idioma: </b>#{referidoSesion.refTemporal.FKIdioma.descripcion} </p>
+                            <p><b>Nivel de idioma: </b>#{referidoSesion.refTemporal.FKNivelIdioma.descripcion} </p>
+                            <p><b>Ciudad: </b>#{referidoSesion.refTemporal.FKCiudad.descripcion}</p>
+                            <p><b>Dirección: </b>#{referidoSesion.refTemporal.direccion}</p>
+                            <p><b>Tipo de documento: </b>#{referidoSesion.refTemporal.FKTipoDocumento.descripcion}</p>
+                            <p><b>Documento: </b>#{referidoSesion.refTemporal.documento}</p>
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                                <p:commandButton class="btn btn-primary"
+                                                 actionListener="#{referidoSesion.descargarHV()}" 
+                                                 value="Descargar HV"
+                                                 ajax="false" >
+                                    <p:fileDownload value="#{referidoSesion.rutaHV}" />
+                                </p:commandButton>
+                            </div>
+                            <hr/>
+                            <p><b>Cambiar perfil del referido (opcional)</b></p>
+                            <p><b>Perfil actual: </b><b><span class="text-primary"> #{referidoSesion.refTemporal.FKReferido.descipcion}</span></b></p>
+                            <p>Selecciona un nuevo perfil</p>                            
+                            <h:selectOneMenu id="tipoReferido" value="#{referidoSesion.tipoReferido.idTipoReferido}" class="form-select">
+                                <f:selectItems itemLabel="#{tip.descipcion}" itemValue="#{tip.idTipoReferido}" var="tip" value="#{referidoSesion.tiposReferidos}"></f:selectItems>                                
+                            </h:selectOneMenu>
+                            <div class="d-grid gap-2 mt-3">
+                                <h:commandButton class="btn btn-warning" action="#{referidoSesion.actualizarPerfilReferido()}" value="Cambiar perfil"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal" id="estado">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Estado del referido</h4>    
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                    </div>                    
+                    <h:form id="frmCompletar">
+                        <div class="modal-body">
+                            <p><b>Referido: </b>#{referidoSesion.refTemporal.nombre} #{referidoSesion.refTemporal.apellido}</p>
+                            <p><b>Cargo: </b>#{referidoSesion.refTemporal.FKReferido.descipcion}</p>
+
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                                <h:commandButton class="btn btn-success" action="#{referidoSesion.contratarReferido()}" value="Contratar"/>
+                                <button class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#liberar" type="button" >Liberar</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="liberar" data-bs-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Describe el motivo de liberación del referido</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                    </div><div class="container"></div>
+
+                    <h:form>                        
+                        <p:panel id="grid">
+                            <div class="modal-body">
+                                <p:inputTextarea rows="5" cols="46" maxlength="200" required="true" id="areaDescripcion"
+                                                 value="#{referidoSesion.refTemporal.descripcionRechazo}" autoResize="false"
+                                                 validatorMessage="La longitud de este campo es de (5 a 200) carácteres "
+                                                 html5:required="true" label="Descrición de rechazo">
+
+                                <f:validateLength minimum="5" maximum="200"/>
+                                </p:inputTextarea>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col ">
+                                    <p:message for="areaDescripcion"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandButton action="#{referidoSesion.liberarReferido()}" id="btnAjax" update="grid"  validateClient="true" class="btn btn-danger" value="Rechazar">
+                                </p:commandButton>
+                            </div>
+                        </p:panel>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>
+

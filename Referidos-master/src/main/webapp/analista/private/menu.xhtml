@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition>
+        <ul class="nav nav-pills bg-dark mb-4">
+            <li class="nav-item">
+                <a class="btn btn-light m-2" aria-current="page" href="index.xhtml">Inicio</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="btn btn-light m-2 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Referidos</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <h:form>
+                        <li><a jsf:action="#{referidoSesion.filtroReferidosAnalistaInicial()}" class="dropdown-item" href="referido.xhtml">Asignados</a></li>
+                        <li><a jsf:action="#{referidoSesion.filtroReferidosAnalistaTotales()}" class="dropdown-item" href="referidosTotales.xhtml">Mostrar todos los referidos</a></li>
+                    </h:form>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-light m-2" aria-current="page" href="perfil.xhtml">Perfil</a>
+            </li>
+        </ul>
+    </ui:composition>
+</html>
+

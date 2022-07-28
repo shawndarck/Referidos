@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="../assets/img/cinte.jpeg" class="d-block w-100" alt="..."/>
+                </div>
+                <div class="carousel-item">
+                    <img src="../assets/img/cinte2.jpeg" class="d-block w-100" alt="..."/>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="registroReferido" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 50rem;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Registra aqui tu referido Cinte!</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="card border-0 shadow">
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div >
+
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="../assets/img/logo.png" alt="" width="190" height="60"></img>
+                            <h:form enctype="multipart/form-data">
+                                <p:panel id="grid">
+                                    <div class="modal-body">
+                                        <p style="color: red;">los campos con (*) son obligatorios</p>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="nombre" class="form-label" value="Nombre"><b>Nombre</b> <b class="text-danger">*</b></label>
+                                                <p:inputText  id="nombre" class="form-control" value="#{referidoSesion.refReg.nombre}"  html5:placeholder="Escribe el nombre" html5:required="true" label="Nombre"
+                                                              validatorMessage="Este campo solo acepta letras y espacios como valores validos y su longitud es de min(3) a max(30) caracteres">
+                                                    <f:validateLength minimum="4" maximum="25"/>
+                                                    <f:validateRegex pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,48}" />
+                                                </p:inputText>
+                                                <div class="row mt-2">
+                                                    <div class="col ">
+                                                        <p:message for="nombre" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col">
+                                                <label for="apellido" class="form-label"><b>Apellidos</b> <b class="text-danger">*</b></label>
+                                                <p:inputText  id="apellido" class="form-control" value="#{referidoSesion.refReg.apellido}" html5:placeholder="Escribe el apellido" html5:required="true" label="Apellido"
+                                                              validatorMessage="Este campo solo acepta letras y espacios como valores validos y su longitud es de min(3) a max(30) caracteres">
+                                                    <f:validateLength minimum="4" maximum="25"/>
+                                                    <f:validateRegex pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,48}" />
+                                                </p:inputText>
+
+                                                <div class="row mt-2">
+                                                    <div class="col ">
+                                                        <p:message for="apellido"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label"><b>Correo Electrónico</b> <b class="text-danger">*</b></label>
+                                            <p:inputText class="form-control" id="email"  html5:placeholder="Escribe@gmail/yahoo/hotmail.com" value="#{referidoSesion.refReg.correo}" html5:required="true"
+                                                         validatorMessage="Escribe la estructura de un correo (yahoo,hotmail,gmail), longitud min(13) a max(40) caracteres" label="Correo">
+                                                <f:validateLength minimum="12" maximum="40"/>
+                                                <f:validateRegex pattern="(\W|^)[\w.\-]{0,25}@(yahoo|hotmail|gmail)\.com(\W|$)" />
+                                            </p:inputText>
+
+                                            <div class="invalid-feedback">
+                                                Ingresa una direccion de correo que sea valida
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col ">
+                                                    <p:message for="email" />
+                                                </div>
+                                            </div>
+                                        </div>                    
+                                        <div class="row">        
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="telefono" class="form-label"><b>Teléfono fijo (opcional)</b></label>
+                                                    <p:inputText  id="telefono" class="form-control" value="#{referidoSesion.refReg.telefonoFijo}" html5:placeholder="Escribe el teléfono" label="Teléfono"
+                                                                  validatorMessage="Este campo solo acepta numeros como valores validos y su longitud es de (16) digitos ">
+                                                        <f:validateLength maximum="16" />
+                                                        <f:validateRegex pattern="[0-9]*" />
+                                                    </p:inputText>
+                                                    <div class="row mt-2">
+                                                        <div class="col ">
+                                                            <p:message for="telefono"/>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="prefijo" class="form-label"><b>Prefijo (opcional)</b></label>
+                                                    <h:selectOneMenu  id="prefijo"  class="form-select" value="#{referidoSesion.prefijoCelular.idPrefijo}">
+                                                        <f:selectItem itemLabel="No aplica*" itemValue="0"/>
+                                                        <f:selectItems itemLabel="#{pre.descripcion}" itemValue="#{pre.idPrefijo}" var="pre" value="#{referidoSesion.prefijos}"></f:selectItems>  
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <label for="celular" class="form-label"><b>Celular (opcional)</b></label>
+                                                    <p:inputText  id="celular" class="form-control" value="#{referidoSesion.refReg.celular}" html5:placeholder="Numero Celular" label="Celular"
+                                                                  validatorMessage="Este campo solo acepta numeros como valores validos y su longitud es de (10) digitos ">
+                                                        <f:validateLength maximum="10" />
+                                                        <f:validateRegex pattern="[0-9]*" />
+                                                    </p:inputText>
+                                                    <div class="row mt-2">
+                                                        <div class="col ">
+                                                            <p:message for="celular"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                      
+                                        <div class="row">                                                     
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="pais" class="form-label"><b>Selecciona el pais</b> <b class="text-danger">*</b></label>
+                                                    <h:selectOneMenu id="l1" class="form-select"  value="#{referidoSesion.pais.idPais}">
+                                                        <f:selectItems value="#{referidoSesion.paises}" var="pais" itemValue="#{pais.idPais}" itemLabel="#{pais.descripcion}"/>
+                                                        <p:ajax update="l2group" listener="#{referidoSesion.renderCiudades()}"/>  
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>        
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="12group" class="form-label"><b>Selecciona la ciudad</b> <b class="text-danger">*</b></label>
+                                                    <h:panelGroup id="l2group">
+                                                        <h:selectOneMenu class="form-select" id="l2" value="#{referidoSesion.ciudad.idCiudad}" >  
+                                                            <f:selectItems itemLabel="#{ciu.descripcion}" itemValue="#{ciu.idCiudad}" var="ciu" value="#{referidoSesion.ciudades}"></f:selectItems>
+                                                        </h:selectOneMenu>  
+                                                    </h:panelGroup>
+                                                </div>        
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="direccion" class="form-label"><b>Dirección (opcional)</b></label>
+                                            <h:inputText  id="direccion" class="form-control" html5:placeholder="Escribe la dirección" value="#{referidoSesion.refReg.direccion}"/>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="tipodocumento" class="form-label"><b>Tipo de documento</b></label>
+                                                <h:selectOneMenu  id="tipodocumento"  class="form-control" value="#{referidoSesion.tipoDocumento.idTipoDocumento}">
+                                                    <f:selectItems itemLabel="#{tipd.descripcion}" itemValue="#{tipd.idTipoDocumento}" var="tipd" value="#{referidoSesion.tiposDocumentos}"></f:selectItems>  
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <label for="Documento" class="form-label"><b>Número de Documento</b><b class="text-danger">*</b></label>
+                                                    <p:inputText html5:type="text" id="documento" class="form-control" value="#{referidoSesion.refReg.documento}" html5:placeholder="Escribe aqui numero de documento" required="true" label="Documento"
+                                                                 validatorMessage="La longitud de este campo es de (7 a 10) digitos ">
+                                                        <f:validateLength minimum="7" maximum="20"/>                                                        
+                                                    </p:inputText>
+                                                    <div class="row mt-2">
+                                                        <div class="col ">
+                                                            <p:message for="documento"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="idioma" class="form-label"><b>Idioma (opcional)</b></label>
+                                                <h:selectOneMenu  id="idioma"  class="form-select" value="#{referidoSesion.idioma.idIdioma}">
+                                                    <f:selectItem itemLabel="No aplica*" itemValue="0"/>
+                                                    <f:selectItems itemLabel="#{id.descripcion}" itemValue="#{id.idIdioma}" var="id" value="#{referidoSesion.idiomas}"></f:selectItems>  
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <div class="col">
+                                                <label for="nivel" class="form-label"><b>Nivel de idioma (opcional) </b></label>
+                                                <h:selectOneMenu  id="nivel" class="form-select" value="#{referidoSesion.nivelIdioma.idNivel}">
+                                                    <f:selectItem itemLabel="No aplica*" itemValue="0"/>
+                                                    <f:selectItems itemLabel="#{niv.descripcion}" itemValue="#{niv.idNivel}" var="niv" value="#{referidoSesion.nivelesIdiomas}"></f:selectItems>  
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="row">                        
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="tipoReferido" class="form-label"><b>Perfil</b> <b class="text-danger">*</b></label>
+                                                    <h:selectOneMenu id="tipoReferido"  value="#{referidoSesion.tipoReferido.idTipoReferido}" class="form-select">
+                                                        <f:selectItems itemLabel="#{tip.descipcion}" itemValue="#{tip.idTipoReferido}" var="tip" value="#{referidoSesion.tiposReferidos}"></f:selectItems>                                
+                                                    </h:selectOneMenu>                                
+                                                </div>        
+                                            </div>                                                                            
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="area" class="form-label"><b>Área</b> <b class="text-danger">*</b></label>
+                                                    <h:selectOneMenu id="area" value="#{referidoSesion.area.idArea}" class="form-select">
+                                                        <f:selectItems itemLabel="#{are.descripcion}" itemValue="#{are.idArea}" var="are" value="#{referidoSesion.areas}"></f:selectItems>                                
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Descripcion" class="form-label"><b>Herramientas o tecnologías que conoce su referido</b><b class="text-danger">*</b></label>
+                                            <p:inputText  id="descripcion" class="form-control" value="#{referidoSesion.refReg.descripcion}" html5:placeholder="Haga una breve descripcion de su referido" html5:required="true" label="Descripcion"
+                                                          validatorMessage="Maximo de caracteres (200) y mínimo 4">
+                                                <f:validateLength minimum="4"  maximum="200"/>
+                                            </p:inputText>
+                                            <div class="row mt-2">
+                                                <div class="col ">
+                                                    <p:message for="descripcion" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="Carga" class="form-label"><b>Cargue aqui hoja de vida de su referido</b><b class="text-danger">*</b></label>
+                                                    <h:inputFile class="form-control form-control-lg " id="carga" value="#{referidoSesion.archivoHV}" label="Carga">
+                                                        <!--Llamado asíncronico-->
+                                                        <f:ajax listener="#{referidoSesion.cargarHV()}"></f:ajax>
+                                                    </h:inputFile>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p:panel>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <p:commandButton value="Registrar" id="btnAjax" update="grid"  validateClient="true" styleClass="p-mr-2" action="#{referidoSesion.registrarReferido()}" />
+                                </div>
+                            </h:form>      
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:composition>
+</html>
+

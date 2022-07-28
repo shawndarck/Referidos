@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mt-4 mb-4 shadow-lg">
+            <div class="container-fluid">
+                <img src="../assets/img/logo.png" height="60" width="160" alt=""/>
+                <a class="navbar-brand ms-3" href="#">Analista / ${nombre}</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <div class="container">
+                                <div class="row">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <h:form rendered="#{usuarioSesion.esAdministrador}" class="d-flex pe-4">
+                        <div class="col">
+                            <div class="dropdown">
+                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Rol
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <c:forEach items="#{usuarioSesion.usuLog.rolList}" var="rol">
+                                        <li><a href="../#{rol.descripcion}/index.xhtml" class="dropdown-item">#{rol.descripcion}</a></li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                    </h:form>
+                    <div class="d-flex pe-4">
+                        <a href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <h:form id="frmContador">                                
+                                <p:badge value="#{notificacionSesion.contador}" severity="danger">
+                                    <i class="pi pi-bell" style="font-size: 2rem;"/>
+                                </p:badge>                                
+                            </h:form>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="left: 600px;">
+                            <a class="btn btn-primary m-2" href="notificaciones.xhtml">Leidos</a>
+                            <h:form id="frmNotificacion">
+                                <h:commandButton class="btn btn-dark" action="#{notificacionSesion.cambiarLeidos()}" rendered=":frmNotificacion" value="Leidos"/>
+                                <c:forEach items="#{notificacionSesion.notificaciones}" var="item" varStatus="act" >
+                                    <li>
+                                        <div class="alert alert-secondary" role="alert">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div>#{item.descripcion}</div>
+                                                    <div><b>#{item.FKReferido.nombre} #{item.FKReferido.apellido}</b></div>
+                                                </div>
+                                                <div class="col ms-4 mb-2">
+                                                    <h:outputText value="#{item.fechaRegistro}">
+                                                    </h:outputText>
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col text-center">
+                                                                <h:commandButton class="btn btn-primary" value="Leido" action="#{notificacionSesion.leerNotificacion(item)}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <hr/>
+                                        </div>
+                                    </li>
+                                </c:forEach>
+                            </h:form>
+                        </ul>
+                    </div>
+                    <h:form class="d-flex">
+                        <h:commandButton class="btn btn-danger" action="#{usuarioSesion.cerrarSesion()}" value="Cerrar sesión"/>
+                    </h:form>
+                </div>
+            </div>
+        </nav>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </ui:composition>
+</html>
+
